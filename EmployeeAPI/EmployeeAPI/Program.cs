@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddControllers();
+
 
 var key = "this is my very very complex";
 builder.Services.AddAuthentication(x =>
@@ -31,7 +31,7 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false,
     };
 });
-builder.Services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
+//builder.Services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -41,6 +41,13 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
 });
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+var scope = builder.Services.BuildServiceProvider();
+
+var zCandiRepo = scope.CreateScope().ServiceProvider.GetService<IEmployeeRepository>();
+
+builder.Services.AddSingleton<IJwtAuthenticationManager>
+                    (new JwtAuthenticationManager(zCandiRepo, key));
 
 var app = builder.Build();
 

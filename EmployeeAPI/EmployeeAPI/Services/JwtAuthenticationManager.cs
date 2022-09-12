@@ -1,4 +1,6 @@
 ﻿using EmployeeAPI.Model.Domain;
+using EmployeeAPI.Repositories;
+using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,20 +10,29 @@ namespace EmployeeAPI.Services
 {
     public class JwtAuthenticationManager:IJwtAuthenticationManager
     {
-        private readonly IDictionary<string , string> user = new Dictionary<string , string>()
-        {
+        //private readonly IDictionary<string , string> user = new Dictionary<string , string>()
+        //{
             
-            {"user1","password1" },
-            {"user2","password2" }
-        };
+        //    {"user1","password1" },
+        //    {"user2","password2" }
+        //};
+
+        private readonly IEmployeeRepository employeeRepository;
         private readonly string key;
-        public JwtAuthenticationManager(string key)
+        public JwtAuthenticationManager(IEmployeeRepository employeeRepository, string key)
         {
             this.key = key;
+            this.employeeRepository = employeeRepository;
+
         }
-        public string Authenticate(string username, string password)
+        public string Authenticate(string Username, string Password)
         {
-            if (!user.Any(u => u.Key == username && u.Value == password))
+            var employees = employeeRepository.GetAllEmployees();
+            //if (!user.Any(u => u.Key == username && u.Value == password))
+            //{
+            //return null;
+            //}
+            if (!employees.Any(employees => employees.username == Username && employees.password == Password))
             {
                 return null;
             }
@@ -31,7 +42,7 @@ namespace EmployeeAPI.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, Username)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),

@@ -17,16 +17,26 @@ namespace EmployeeAPI.Controllers
             this.jwtAuthenticationManager = jwtAuthenticationManager;
 
         }
-        [HttpPost]
-        public IActionResult Authenticate([FromBody] User user)//Model Binding-Modeling hTTp request as model user
-        {
-            var token = jwtAuthenticationManager.Authenticate(user.username, user.password);
-            if (token == null)
-            {
-                return Unauthorized();
+        //[HttpPost]
+        //public IActionResult Authenticate([FromBody] User user)//Model Binding-Modeling hTTp request as model user
+        //{
+        //    var token = jwtAuthenticationManager.Authenticate(user.username, user.password);
+        //    if (token == null)
+        //    {
+        //        return Unauthorized();
 
-            }
-            return Ok("Your Token=" + token);
+        //    }
+        //    return Ok("Your Token=" + token);
+        //}
+        [HttpPost]
+        public IActionResult Authentication(string Username, string Password)
+        {
+            var token = jwtAuthenticationManager.Authenticate(Username, Password);
+            if (token == null)
+                return Unauthorized();
+            else
+                return Ok(token);
         }
+
     }
 }

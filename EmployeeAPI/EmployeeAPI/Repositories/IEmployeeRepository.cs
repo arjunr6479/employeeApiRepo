@@ -12,5 +12,7 @@ namespace EmployeeAPI.Repositories
         Task <Employee> AddEmployeeAsync(Employee employee);
         Task <Employee> UpdateEmployeeAsync(int id,Employee employee);
 
+        List<Employee> GetAllEmployees();//authentication
+
     }
 }

@@ -26,9 +26,9 @@ namespace EmployeeAPI.Controllers
         {
             var allEmps = await employeeRepository.GetEmployeesAsync();
             var empsDto = mapper.Map<List<EmployeeDto>>(allEmps);
-            return Ok(empsDto); 
+            return Ok(empsDto);
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetEmpByIdAsync(int id)
         {
             var emp = await employeeRepository.GetEmployeeByIdAsync(id);

@@ -12,6 +12,5 @@ namespace EmployeeAPI.Data
 
         public DbSet<Employee> Employees  { get; set; }
         public DbSet<Dept> Depts { get; set; }
-        public DbSet<User>Users { get; set; }
     }
 }

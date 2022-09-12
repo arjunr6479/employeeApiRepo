@@ -35,6 +35,11 @@ namespace EmployeeAPI.Repositories
            
         }
 
+        public List<Employee> GetAllEmployees()
+        {
+            return employeeDbContext.Employees.ToList();
+        }
+
         public async Task<Employee> GetEmployeeByIdAsync(int id)
         {
             return await employeeDbContext.Employees.FirstOrDefaultAsync(x=>x.EmpId==id);
@@ -64,6 +69,7 @@ namespace EmployeeAPI.Repositories
             }
             return emp;
         }
+
     }
 }        
        

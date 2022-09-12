@@ -12,6 +12,11 @@ namespace EmployeeAPI.Model.Domain
 
         public double Esalary { get; set; }
         [Required]
+        public string username { get; set; }
+        [Required]
+        public string password { get; set; }
+
+        [Required]
         public int DeptId  { get; set; }
         public Dept Dept { get; set; }
     }
